@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1611571460737">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1611574158245">
 <link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
 
 
@@ -31,7 +31,7 @@ Shell 的变量功能
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://townshaw.github.io">
-        <img src="https://townshaw.github.io/images/avatar.png?v=1611571460737" class="site-logo">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1611574158245" class="site-logo">
         <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -126,20 +126,20 @@ echo ${PATH}
 <li>右边的字符串可以不需要像 <code>C</code> 语言中的那样加上引号。</li>
 <li>等号左右不能直接接等号，即 <code>myname = XT</code> 是非法的。</li>
 <li>变量名的开头字符不能为数字。</li>
-<li>双引号内的特殊字符如 <code>$</code> 等，可以保有原本的特性，如：<pre><code class="language-shell">var=&quot;lang is $LANG&quot;
+<li>双引号内的特殊字符如 <code>$</code> 等，可以保有原本的特性，如：<pre><code class="language-shell"> var=&quot;lang is $LANG&quot;
  echo var
  -&gt; lang is zh-CN.UTF-8
 </code></pre>
 </li>
 <li>单引号内的特殊字符如 <code>$</code> 等，则视为一般字符(纯文本)：<pre><code class="language-shell"> var='lang is $LANG'
-  echo
-  -&gt; lang is $LANG
+ echo
+ -&gt; lang is $LANG
 </code></pre>
 </li>
 <li>可以使用转义字符 <code>\</code> 来将空格、回车等特殊字符转化为一般字符。</li>
 <li>若该变量为扩增变量内容时，则可用 &quot;$变量名称&quot; 或 ${变量} 累加内容，如：<pre><code class="language-shell"> PATH=&quot;$PATH&quot;:/home/bin
-  #or
-  PATH=${PATH}:/home/bin
+ #or
+ PATH=${PATH}:/home/bin
 </code></pre>
 </li>
 <li>若该环境变量需要在其他子程序中执行，则需要使用 <code>export</code> 命令，否则只能在当前的 <code>shell</code> 中使用。</li>
@@ -150,6 +150,12 @@ echo ${PATH}
 使用 <code>set</code> 命令来查看所有的变量，而不仅仅是环境变量。<br>
 一个特殊的变量：<code>$?</code> 可以返回上一个执行的命令所返回的值，更多特殊变量可以参考《鸟哥的Linux私房菜》P323。<br>
 <code>export</code> 命令：单独执行该命令与 <code>env</code> 有着相同的效果。但是 <code>export 变量名称</code> 可以将自定义变量转化为环境变量。</p>
+<h2 id="变量的有效范围">变量的有效范围</h2>
+<p>可以大致理解为：<br>
+环境变量 = 全局变量<br>
+自定义变量 = 局部变量<br>
+可以使用 <code>export</code> 命令将自定义变量转化为环境变量。</p>
+<p>还有些有关变量的微调指令，未完待续~~~</p>
 
             </div>
             
