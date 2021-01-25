@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://townshaw.github.io</id>
     <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-01-25T11:29:20.811Z</updated>
+    <updated>2021-01-25T11:31:41.876Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://townshaw.github.io"/>
     <link rel="self" href="https://townshaw.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://townshaw.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Welcome to TX&apos;s Blog</rights>
     <entry>
-        <title type="html"><![CDATA[Shell 学习笔记]]></title>
+        <title type="html"><![CDATA[Shell 变量功能]]></title>
         <id>https://townshaw.github.io/post/shell-xue-xi-bi-ji/</id>
         <link href="https://townshaw.github.io/post/shell-xue-xi-bi-ji/">
         </link>
