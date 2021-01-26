@@ -1,22 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://townshaw.github.io</id>
-    <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-01-26T14:57:21.788Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://townshaw.github.io"/>
-    <link rel="self" href="https://townshaw.github.io/atom.xml"/>
-    <subtitle>学习学习学习</subtitle>
-    <logo>https://townshaw.github.io/images/avatar.png</logo>
-    <icon>https://townshaw.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, Welcome to TX&apos;s Blog</rights>
-    <entry>
-        <title type="html"><![CDATA[Shell 脚本]]></title>
-        <id>https://townshaw.github.io/post/shell-jiao-ben/</id>
-        <link href="https://townshaw.github.io/post/shell-jiao-ben/">
-        </link>
-        <updated>2021-01-26T13:19:36.000Z</updated>
-        <content type="html"><![CDATA[<p>这学期编译原理的实验大部分都是在 linux 终端下完成的，因为需要用 cmake 和 make 等工具，有时候为了生成一个可执行文件需要输入好几个命令，比如最后的大实验中生成可执行文件需要输入的命令有：</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Shell 脚本 | Welcome to TX&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1611673037754">
+<link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="这学期编译原理的实验大部分都是在 linux 终端下完成的，因为需要用 cmake 和 make 等工具，有时候为了生成一个可执行文件需要输入好几个命令，比如最后的大实验中生成可执行文件需要输入的命令有：
+git pull        #..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://townshaw.github.io">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1611673037754" class="site-logo">
+        <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            文章
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/TownShaw" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      学习学习学习
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://townshaw.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Shell 脚本</h2>
+            <div class="post-date">2021-01-26</div>
+            
+            <div class="post-content" v-pre>
+              <p>这学期编译原理的实验大部分都是在 linux 终端下完成的，因为需要用 cmake 和 make 等工具，有时候为了生成一个可执行文件需要输入好几个命令，比如最后的大实验中生成可执行文件需要输入的命令有：</p>
 <pre><code class="language-shell">git pull        #获取最新的代码
 rm -r build     #删除原有的 build 文件
 mkdir build &amp;&amp; cd build
@@ -144,69 +227,51 @@ done
 </ol>
 <h1 id="脚本的跟踪与调试">脚本的跟踪与调试</h1>
 <p>//时间不早了睡觉去了，未完待续 ~~~</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Shell 变量功能]]></title>
-        <id>https://townshaw.github.io/post/shell-xue-xi-bi-ji/</id>
-        <link href="https://townshaw.github.io/post/shell-xue-xi-bi-ji/">
-        </link>
-        <updated>2021-01-25T09:29:51.000Z</updated>
-        <content type="html"><![CDATA[<p>学习自《鸟哥的Linux私房菜》。<br>
-因为 <code>shell</code>命令众多，所以边学边把自己认为有用 or 以后可能用到的命令或者功能记录下来。</p>
-<h1 id="shell-的变量功能">Shell 的变量功能</h1>
-<p>简单来说，<code>shell</code> 的变量就是用一串特定的字符串去代表不固定的内容。比如最常见的 <code>PATH</code> 变量。<code>PATH</code> 变量与日常的 linux 命令行使用息息相关。<br>
-比如我们最常执行的 <code>ls</code> 和 <code>cd</code> 命令，我们以 <code>ls</code> 命令为例。<code>ls</code> 命令的本质是一个可执行文件，它处在 <code>/bin/</code> 文件夹下，完整路径应为 <code>/bin/ls</code> 。<br>
-我们知道，如果要执行一个可执行文件，应该需要输入该文件的完整路径(绝对路径和相对路径都可以)，但为什么我们在 <code>~/</code> 目录下，只需要输入 <code>ls</code> 就可以执行对应的可执行文件，而不需要将完整路径 <code>/bin/ls</code> 都输入进去呢？<br>
-这就是因为在 <code>PATH</code> 环境变量中存在路径 <code>/bin/</code>，而 <code>shell</code> 在执行命令时会去 <code>PATH</code> 变量指向的路径中去寻找对应的可执行文件。也就是说我们在执行 <code>ls</code> 时，<code>shell</code> 会在 <code>PATH</code> 中找到一个文件夹路径 <code>/bin/</code>，然后 <code>shell</code> 会去 <code>/bin/</code> 中查找是否有 <code>ls</code> 可执行文件，这样便免去了我们要执行 <code>ls</code> 时每次都输入完整路径的麻烦。<br>
-不仅如此，<code>shell</code> 变量的存在也使得 <code>shell</code> 脚本的可扩展性、可移植性大大增强。</p>
-<h1 id="变量的使用与设置">变量的使用与设置</h1>
-<h2 id="变量的使用">变量的使用</h2>
-<p>比如我要查看 <code>PATH</code> 环境变量，那么我需要使用 <code>echo</code> 命令，如下：</p>
-<pre><code class="language-shell">echo $PATH 
-#or
-echo ${PATH}
-</code></pre>
-<p>可以使用 <code>echo</code> 指令来查看变量的内容，但是变量名前必须加上 <code>$</code> 符号。</p>
-<h2 id="变量的设置">变量的设置</h2>
-<p>变量在设置时，<strong>不能</strong>加上 <code>$</code> 符号，比如我要定义一个 <code>myname</code> 变量：</p>
-<pre><code class="language-shell">myname=XT
-</code></pre>
-<p><strong>注意：</strong></p>
-<ol>
-<li>右边的字符串可以不需要像 <code>C</code> 语言中的那样加上引号。</li>
-<li>等号左右不能直接接等号，即 <code>myname = XT</code> 是非法的。</li>
-<li>变量名的开头字符不能为数字。</li>
-<li>双引号内的特殊字符如 <code>$</code> 等，可以保有原本的特性，如：<pre><code class="language-shell"> var=&quot;lang is $LANG&quot;
- echo var
- -&gt; lang is zh-CN.UTF-8
-</code></pre>
-</li>
-<li>单引号内的特殊字符如 <code>$</code> 等，则视为一般字符(纯文本)：<pre><code class="language-shell"> var='lang is $LANG'
- echo
- -&gt; lang is $LANG
-</code></pre>
-</li>
-<li>可以使用转义字符 <code>\</code> 来将空格、回车等特殊字符转化为一般字符。</li>
-<li>若该变量为扩增变量内容时，则可用 &quot;$变量名称&quot; 或 ${变量} 累加内容，如：<pre><code class="language-shell"> PATH=&quot;$PATH&quot;:/home/bin
- #or
- PATH=${PATH}:/home/bin
-</code></pre>
-</li>
-<li>若该环境变量需要在其他子程序中执行，则需要使用 <code>export</code> 命令，否则只能在当前的 <code>shell</code> 中使用。</li>
-<li>取消变量的方式为使用 <code>unset</code> 命令，如 <code>unset myname</code>。</li>
-</ol>
-<h2 id="环境变量的功能">环境变量的功能</h2>
-<p>可以使用 <code>env</code> 命令来查看所有的默认环境变量。<br>
-使用 <code>set</code> 命令来查看所有的变量，而不仅仅是环境变量。<br>
-一个特殊的变量：<code>$?</code> 可以返回上一个执行的命令所返回的值，更多特殊变量可以参考《鸟哥的Linux私房菜》P323。<br>
-<code>export</code> 命令：单独执行该命令与 <code>env</code> 有着相同的效果。但是 <code>export 变量名称</code> 可以将自定义变量转化为环境变量。</p>
-<h2 id="变量的有效范围">变量的有效范围</h2>
-<p>可以大致理解为：<br>
-环境变量 = 全局变量<br>
-自定义变量 = 局部变量<br>
-可以使用 <code>export</code> 命令将自定义变量转化为环境变量。</p>
-<p>还有些有关变量的微调指令，未完待续~~~</p>
-]]></content>
-    </entry>
-</feed>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://townshaw.github.io/post/shell-xue-xi-bi-ji/">
+                  <h3 class="post-title">
+                    Shell 变量功能
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
