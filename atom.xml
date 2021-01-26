@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://townshaw.github.io</id>
     <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-01-26T15:16:16.373Z</updated>
+    <updated>2021-01-26T15:50:09.141Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://townshaw.github.io"/>
     <link rel="self" href="https://townshaw.github.io/atom.xml"/>
@@ -111,7 +111,7 @@ esac    #case 反过来写，表示 case 结束（迷惑行为）
     #do something
 }
 </code></pre>
-<p>但是**要注意的是：因为 shell 脚本的执行方式为由上而下、由左而右，因此 shell 脚本当中的 function 的设置一定要在程序的最前面，**这样才能够在执行时被找到可用的程序段。</p>
+<p>但是<strong>要注意的是：因为 shell 脚本的执行方式为由上而下、由左而右，因此 shell 脚本当中的 function 的设置一定要在程序的最前面</strong>，这样才能够在执行时被找到可用的程序段。</p>
 <p>另外，function 也是有内置变量的，它的内置变量与 shell 脚本很类似，变量 <code>$0</code> 为函数名称，而后续的变量也是以 <code>$1, $2, ...</code> 来替换。在 function 内无法直接通过 <code>$1</code> 等等访问到 shell 脚本的参数，若要访问则只能将 shell 脚本的参数传递给 function。</p>
 <h1 id="循环loop">循环（loop）</h1>
 <h2 id="不定循环-while-和-do-while">不定循环 while 和 do-while</h2>
