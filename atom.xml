@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://townshaw.github.io</id>
     <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-01-26T15:00:32.072Z</updated>
+    <updated>2021-01-26T15:09:04.809Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://townshaw.github.io"/>
     <link rel="self" href="https://townshaw.github.io/atom.xml"/>
@@ -61,8 +61,8 @@ echo $myname
 <p>从 <code>$0</code> 开始，通过空格分隔，依次往后编号递增。且 <code>$0</code> 就是执行的脚本文件名。</p>
 <p>除了这些数字的变量之外，还有一些较为特殊的变量可以在脚本内使用来调用这些参数：<br>
 <code>$#</code>：代表后接的参数的个数，上例中 <code>$#</code> 为 4.<br>
-<code>$@</code>：代表【&quot;$1&quot;&quot;$2&quot;&quot;$3&quot;&quot;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn><mi mathvariant="normal">&quot;</mi><mi mathvariant="normal">】</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">中</mi><mi mathvariant="normal">每</mi><mi mathvariant="normal">个</mi><mi mathvariant="normal">变</mi><mi mathvariant="normal">量</mi><mi mathvariant="normal">都</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">独</mi><mi mathvariant="normal">立</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">（</mi><mi mathvariant="normal">用</mi><mi mathvariant="normal">双</mi><mi mathvariant="normal">引</mi><mi mathvariant="normal">号</mi><mi mathvariant="normal">括</mi><mi mathvariant="normal">起</mi><mi mathvariant="normal">来</mi><mi mathvariant="normal">）</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">‘</mi></mrow><annotation encoding="application/x-tex">4&quot;】，其中每个变量都是独立的（用双引号括起来）。
-`</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord">&quot;</span><span class="mord cjk_fallback">】</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">中</span><span class="mord cjk_fallback">每</span><span class="mord cjk_fallback">个</span><span class="mord cjk_fallback">变</span><span class="mord cjk_fallback">量</span><span class="mord cjk_fallback">都</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">独</span><span class="mord cjk_fallback">立</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">（</span><span class="mord cjk_fallback">用</span><span class="mord cjk_fallback">双</span><span class="mord cjk_fallback">引</span><span class="mord cjk_fallback">号</span><span class="mord cjk_fallback">括</span><span class="mord cjk_fallback">起</span><span class="mord cjk_fallback">来</span><span class="mord cjk_fallback">）</span><span class="mord cjk_fallback">。</span><span class="mord">‘</span></span></span></span>*`：代表【&quot;$1c$2c$3c$4&quot;】，其中 c 为分隔字符，默认为空格，所以本例中代表【&quot;$1 $2 $3 $4&quot;】。</p>
+<code>$@</code>：代表【&quot;$1&quot;&quot;$2&quot;&quot;$3&quot;&quot;$4&quot;】，其中每个变量都是独立的（用双引号括起来）。<br>
+<code>$*</code>：代表【&quot;$1c$2c$3c$4&quot;】，其中 c 为分隔字符，默认为空格，所以本例中代表【&quot;$1 $2 $3 $4&quot;】。</p>
 <h2 id="shift-进行偏移">shift 进行偏移</h2>
 <p>shift 可以后面可以接数字，表示拿掉最前面的几个参数的意思。比如上面的例子中，如果执行：</p>
 <pre><code class="language-shell">shift 2
