@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1611676207566">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1611755166705">
 <link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
 
 
@@ -35,7 +35,7 @@ git pull        #..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://townshaw.github.io">
-        <img src="https://townshaw.github.io/images/avatar.png?v=1611676207566" class="site-logo">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1611755166705" class="site-logo">
         <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -236,7 +236,17 @@ done
 <li>......</li>
 </ol>
 <h1 id="脚本的跟踪与调试">脚本的跟踪与调试</h1>
-<p>//时间不早了睡觉去了，未完待续 ~~~</p>
+<p>在脚本执行之前，可以使用 <code>bash</code> 的相关参数来检查脚本是否存在语法问题。<br>
+在脚本执行时，也同样可以使用 <code>bash</code> 的相关参数来追踪脚本执行时的运行情况，以方便调试。<br>
+可以使用的 <code>bash</code> 参数如下：</p>
+<pre><code class="language-shell">sh [-nvx] scripts.sh
+</code></pre>
+<p>选项与参数：</p>
+<ul>
+<li>-n：不要执行脚本，仅查询语法的问题。若脚本语法没有问题，则不会输出任何信息。</li>
+<li>-v：在执行脚本之前，会将脚本的内容输出到屏幕上。</li>
+<li>-x：将使用到的脚本内容显示到屏幕上。（用于调试）</li>
+</ul>
 
             </div>
             
