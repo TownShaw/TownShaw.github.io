@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>C++ 学习笔记 01 | Welcome to TX&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1612967809653">
+<link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="因为本文是按照《C++ Primer Plus》这本书的顺序来学习的，所以内容可能会比较乱，不过先凑合写着吧。以后闲下来了再来整理。
+1. 函数指针
+1. 获取函数的地址
+只需要使用函数名（后面不需要带括号、带参数）即可获得函数的地址。比如..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://townshaw.github.io">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1612967809653" class="site-logo">
+        <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            文章
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/TownShaw" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+          <a class="social-link" href="https://twitter.com/Xavier_Shaw0219" target="_blank">
+            <i class="fab fa-twitter"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      学习学习学习
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://townshaw.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">C++ 学习笔记 01</h2>
+            <div class="post-date">2021-02-10</div>
+            
+            <div class="post-content" v-pre>
+              <p>因为本文是按照《C++ Primer Plus》这本书的顺序来学习的，所以内容可能会比较乱，不过先凑合写着吧。以后闲下来了再来整理。</p>
+<h1 id="1-函数指针">1. 函数指针</h1>
+<h2 id="1-获取函数的地址">1. 获取函数的地址</h2>
+<p>只需要使用函数名（后面不需要带括号、带参数）即可获得函数的地址。比如 <code>think()</code> 是一个函数，则 <code>think</code> 就是一个这个函数的地址。比如：</p>
+<pre><code class="language-c++">progress(think)		//传递函数的地址
+progress(think())	//传递函数的返回值
+</code></pre>
+<h2 id="2-声明函数指针">2. 声明函数指针</h2>
+<p>声明只想某种数据类型的指针时，必须指明指针指向的类型。声明函数指针是也是如此。</p>
+<p>函数指针的声明与普通指针的声明有一点区别，在于函数指针申明时还必须加上对应函数的参数列表，比如：</p>
+<pre><code class="language-c++">double foo(int i, double c) {}	//声明函数 foo
+
+double * pd;	//普通指针声明
+double (*pf)(int, double);	//声明函数指针, 表示 pf 为指向一个接受 int, double 参数, 返回 double 数据的函数
+pf = foo;	//赋值
+</code></pre>
+<p>声明函数指针时，还需要注意优先级。具体体现在声明 <code>pf</code> 时，必须要用括号将 <code>*pf</code> 括起，否则 <code>*</code> 会优先和 <code>double</code> 结合。</p>
+<p>注意，函数指针指向的函数的特征标（接受的参数、返回类型）必须和函数指针的声明保持一致，否则编译器会拒绝这种赋值。</p>
+<h2 id="3-使用指针来调用函数">3. 使用指针来调用函数</h2>
+<p>如上例中，<code>*pf</code> 和函数 <code>foo</code> 扮演的角色、功能都是相同的，所以可以直接将 <code>*pf</code> 当作函数名使用即可。</p>
+<p>这里有两种使用方式，如下：</p>
+<pre><code class="language-c++">(*pf)(1, 1.0);	//对指针解引用
+pf(1, 1.0);		//直接对指针进行调用
+</code></pre>
+<p>《C++ Primer Plus》上说两种方式都可行，但是我自己试了一次只有第一种方式可行。而且第一种方式我个人认为更好，因为这样直接地表示出来当前正在用函数指针。</p>
+<h1 id="2-静态持续变量">2. 静态持续变量</h1>
+<p><code>C++</code> 中为静态存储持续性变量提供了 3 种链接性：外部链接性（可在其他文件中访问）、内部链接性（只能在当前文件中使用）、无链接性（只能在当前函数或代码块中使用）。</p>
+<p>下面给出这 3 种变量的创建范例：</p>
+<pre><code class="language-c++">int global = 0;		//静态持续变量，具有外部链接性
+static int one_file = 0;	//静态持续变量，具有内部链接性
+
+int main()
+{
+    int i = 0;	//局部变量
+    static int count = 0;	//静态持续变量，无链接性
+}
+</code></pre>
+<p>上面的 <code>count</code> 变量看似是一个静态变量，可能和 <code>one_file</code> 地位是相同的。但是实际上 <code>count</code> 和 <code>i</code> 时类似的，尽管它是静态变量，但是和 <code>i</code> 一样只能在 <code>main()</code> 函数中使用，作用域为局部，没有链接性。</p>
+<p>但它与 <code>i</code> 不同的地方在于，即使在 <code>main()</code> 函数没有被执行的时候，<code>count</code> 也存在于内存中。</p>
+<p>下标给出 5 种变量的存储方式：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">存储描述</th>
+<th style="text-align:center">持续性</th>
+<th style="text-align:center">作用域</th>
+<th style="text-align:center">链接性</th>
+<th style="text-align:center">如何声明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">自动</td>
+<td style="text-align:center">自动</td>
+<td style="text-align:center">代码块</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">在代码块中</td>
+</tr>
+<tr>
+<td style="text-align:center">寄存器</td>
+<td style="text-align:center">自动</td>
+<td style="text-align:center">代码块</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">在代码块中，使用关键字 <code>register</code></td>
+</tr>
+<tr>
+<td style="text-align:center">静态、无链接性</td>
+<td style="text-align:center">静态</td>
+<td style="text-align:center">代码块</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">在代码块中，使用关键字 <code>static</code></td>
+</tr>
+<tr>
+<td style="text-align:center">静态、外部链接性</td>
+<td style="text-align:center">静态</td>
+<td style="text-align:center">文件</td>
+<td style="text-align:center">外部</td>
+<td style="text-align:center">不在任何函数内</td>
+</tr>
+<tr>
+<td style="text-align:center">静态、内部链接性</td>
+<td style="text-align:center">静态</td>
+<td style="text-align:center">文件</td>
+<td style="text-align:center">内部</td>
+<td style="text-align:center">不在任何函数内，使用关键字 <code>static</code></td>
+</tr>
+</tbody>
+</table>
+<p>可以看出 <code>static</code> 关键字起到一个限定的作用，限制了变量的作用域。因此在两个文件中出现有相同标识符的两个变量时，要使用 <code>static</code> 关键字对其中一个进行限定，否则可能会出现重定义。如下例：</p>
+<pre><code class="language-c++">// file_1
+int global = 0;
+--------------------------------------------------------------
+// file_2
+//int global = 1;	//出现重定义
+static int global = 0;	//覆盖 or 隐藏了 file_1 中的 global, 没有重定义
+</code></pre>
+<h1 id="3-名称空间">3. 名称空间</h1>
+<p>名称空间是用于控制 <code>C++</code> 中的变量名称作用域。比如说我想在一个 <code>.cpp</code> 文件中的同一个作用域中使用两个标识符为 <code>foo</code> 的变量，那我就可以使用名称空间的方法在达到目的：</p>
+<pre><code class="language-c++">namespace np_1
+{
+    int foo = 0;
+}
+
+namespace np_2
+{
+    int foo = 0;
+}
+
+int main()
+{
+    np_1::foo = 1;	//使用第一个 foo
+    np_2::foo = 2;	//使用第二个 foo
+}
+</code></pre>
+<p>上面的例子看起来很傻*，但是<strong>我目前认为</strong>名称空间顶多就是这种用法的复杂化，或者说名称空间就是用于解决这种问题的。</p>
+<h2 id="1-using-声明和-using-编译指令">1. <code>using</code> 声明和 <code>using</code> 编译指令</h2>
+<p>在上例中，如果我在 <code>main()</code> 函数中多次地使用 <code>np_1::foo</code> 变量，那每次我都要打一个前缀 <code>np_1::</code> ，这对于这个名称空间还可以接受，要是碰上了像 <code>llvm</code> 里面的那种超长名称空间，岂不是得烦死。</p>
+<p>所以 <code>C++</code> 提供了 <code>using</code> 声明，就为我这种蓝狗提供了很大的便利。比如上例中 <code>np_1::foo</code> 可以简化为：</p>
+<pre><code class="language-c++">using np_1::foo
+// 此时不能再使用 using np_2::foo, 因为这会导致歧义
+    
+int main()
+{
+    foo = 1;	//使用第一个 foo
+    np_2::foo = 2;	//使用第二个 foo
+}
+</code></pre>
+<p>这就是 <code>using</code> 声明，可以在使用一个变量 or 函数 or 方法的时候免去输入名称空间的名字。</p>
+<p>至于 <code>using</code> 编译指令就更简单了，直接使得整个名称空间中的所有变量 and 函数 and 方法都可用，可以理解为是一个极大加强版的 <code>using</code> 声明，比如：</p>
+<pre><code class="language-c++">using namespace np_1
+
+int main()
+{
+    foo = 1;	// np_1::foo
+}
+</code></pre>
+<p>这个我们应该不陌生，因为大部分初学者（包括我）在写简单的 <code>.cpp</code> 文件时都会在文件头加上一句：</p>
+<pre><code class="language-c++">using namespace std;	//hhhh
+</code></pre>
+<p>虽然很方便, 但是在实际使用时并不是很推荐, 尤其是在编写多个 <code>.cpp</code> 文件时。因为这么做实际上使得名称空间的存在失去了意义。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://townshaw.github.io/post/cpp-xue-xi-bi-ji-01/">
+                  <h3 class="post-title">
+                    C++ 学习笔记 01
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
