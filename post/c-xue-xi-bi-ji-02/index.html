@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>C++ 学习笔记 02 | Welcome to TX&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1613021228369">
+<link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="这篇主讲 C++ 对象和类。
+一. C++ 类
+1. const 成员函数
+对函数使用 const 关键字，是用于保证函数的内部不会修改调用的对象。const 关键字应该放在函数的声明括号之后，比如：
+class A
+{
+private:
+..." />
+    <meta name="keywords" content="C++" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://townshaw.github.io">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1613021228369" class="site-logo">
+        <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            文章
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/TownShaw" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+          <a class="social-link" href="https://twitter.com/Xavier_Shaw0219" target="_blank">
+            <i class="fab fa-twitter"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      学习学习学习
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://townshaw.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">C++ 学习笔记 02</h2>
+            <div class="post-date">2021-02-11</div>
+            
+            <div class="post-content" v-pre>
+              <p>这篇主讲 <code>C++</code> 对象和类。</p>
+<h1 id="一-c-类">一. <code>C++</code> 类</h1>
+<h2 id="1-const-成员函数">1. <code>const</code> 成员函数</h2>
+<p>对函数使用 <code>const</code> 关键字，是用于<strong>保证函数的内部不会修改调用的对象</strong>。<code>const</code> 关键字应该放在函数的声明括号之后，比如：</p>
+<pre><code class="language-c++">class A
+{
+private:
+    int foo = 0;
+public:
+    void show() const
+    {
+        std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;
+	}
+	/*	这里声明为 const, 但是实际上改变了 foo, 因此编译器会报错
+    void set() const
+    {
+        foo = 1;
+	}
+	*/
+}
+</code></pre>
+<h2 id="2-运算符重载">2. 运算符重载</h2>
+<p>运算符重载本质上也是一个类的成员函数，不同之处在于它可以使用 <code>C++</code> 有效的运算符进行简略表达，这么做的目的主要是使得对象的操作更加的美观 + 直观。这么做的好处出了好看之外，还有能够抽象凸显出对象操作的本质，使得更能为程序员所理解、接受。</p>
+<p>其实我们已经见过很多重载了，比如最简单的加法 <code>+</code> ，我们在将数字进行相加时，实际上有多种情况需要考虑。比如：</p>
+<pre><code class="language-c++">1 + 1
+1 + 1.0
+1.0 + 1.0
+</code></pre>
+<p>这三种分别表示这不同的数字类型进行加法。<code>C/C++</code> 处理这种算术的方式就是使用运算符重载。</p>
+<p>如果我们要在类中重载运算符，只需要使用如下的格式：</p>
+<pre><code class="language-c++">operatorop(argument-list)
+
+//比如
+operator+=(vector&lt;int&gt; &amp;nums1, vector&lt;int&gt; &amp;nums2)
+{//默认长度相同, 重载 += 运算符
+    for (int i = 0; i &lt; nums1.size(); i++)
+    {
+        nums1[i] += nums2[i];
+	}
+}
+</code></pre>
+<p>上例就重载了 <code>+=</code> 运算符。但是要注意的是运算符重载只能重载 <code>C++</code> 中存在的运算符，比如不能弄出一个 <code>operator@(...)</code> 的运算符重载，因为 <code>C++</code> 中 <code>@</code> 并不是一个有效地运算符，因此不能用于重载。</p>
+<p>这里还有一个小细节需要交代，比如在上例中：</p>
+<pre><code class="language-c++">vector&lt;int&gt; nums1;
+vector&lt;int&gt; nums2;
+
+nums1 += nums2;
+</code></pre>
+<p>其中 <code>nums1 += nums2</code> 相当于 <code>nums1.operator+=(nums2)</code> ，因此函数的调用者是 <code>nums1</code> ，被调用者是 <code>nums2</code> 。</p>
+<h3 id="1-重载的限制">(1). 重载的限制</h3>
+<ol>
+<li>重载后的运算符必须至少有一个操作数是<strong>用户自定义</strong>的类型，这将防止用户为标准类型重载运算符。</li>
+<li>使用运算符时不能违反运算符原来的句法规则。比如不能将 <code>%</code> 变成单目运算符。</li>
+<li>不能修改运算符的优先级。比如重载了 <code>+</code> 和 <code>*</code> ，则 <code>*</code> 的优先级比 <code>+</code> 高。</li>
+<li>不能创建新的运算符。</li>
+<li>不能重载以下的运算符：
+<ul>
+<li><code>sizeof</code></li>
+<li><code>.</code>: 成员运算符</li>
+<li><code>. *</code>: 成员指针运算符</li>
+<li><code>::</code>: 作用域解析运算符</li>
+<li><code>?:</code>: 条件运算符</li>
+<li><code>typeid</code>:  <code>RTTI</code>运算符</li>
+<li><code>const_cast</code>: 强制类型转换运算符</li>
+<li><code>dynamic_cast</code>: 强制类型转换运算符</li>
+<li><code>reinterpret_cast</code>: 强制类型转换运算符</li>
+<li><code>static_cast</code>: 强制类型转换运算符</li>
+</ul>
+</li>
+<li>下面的运算符只能通过<strong>成员函数</strong>进行重载：
+<ul>
+<li><code>=</code>: 赋值运算符</li>
+<li><code>()</code>: 函数调用运算符</li>
+<li><code>[]</code>: 下标运算符</li>
+<li><code>-&gt;</code>: 通过指针访问类成员的运算符</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-友元">3. 友元</h2>
+<p>通常，公有类方法提供对类对象私有部分唯一的访问途径。但有时这种限制过于严格，所以 <code>C++</code> 提供了另一种访问途径：<strong>友元</strong>。</p>
+<p>友元分为三类：</p>
+<ul>
+<li>友元函数</li>
+<li>友元类</li>
+<li>友元成员函数</li>
+</ul>
+<p>通过让函数成为类的友元，可以赋予该函数与类的成员函数相同的访问权限。</p>
+<h3 id="1-友元函数">(1). 友元函数</h3>
+<h4 id="创建友元">创建友元</h4>
+<p>创建友元函数的第一步是将其放在类声明中，并在原型声明前加上关键字 <code>friend</code>：</p>
+<pre><code class="language-c++">friend Time operator*(double m, Time &amp; t);	//来自 C++ Primer Plus 的例子
+</code></pre>
+<p>该原型意味着以下两点：</p>
+<ul>
+<li>虽然 <code>operator*()</code> 函数是在类声明中声明的，但他不是成员函数，所以不能使用成员运算符 <code>.</code> 来访问。</li>
+<li>虽然 <code>operator*()</code> 函数不是成员函数，但它与成员函数具有相同的访问权限。</li>
+</ul>
+<p>另外，在编写友元函数的定义时，不需要加上作用域限定 <code>*::</code> ，同时，在定义中也不要加上关键字 <code>friend</code>：</p>
+<pre><code class="language-c++">Time operator*(double m, Time &amp; t)	//将时间 t 放大 m 倍
+{
+    Time result;
+    long totalminutes = t.hours * m * 60 + t.minutes * m;
+    result.hours = totalminutes / 60;
+    result.minutes = totalminutes % 60;
+    return result;
+}
+</code></pre>
+<h2 id="4-特殊成员函数">4. 特殊成员函数</h2>
+<h3 id="1-默认构造函数">(1). 默认构造函数</h3>
+<p>如果没有提供任何构造函数，<code>C++</code> 将创建默认构造函数。比如对于 <code>Time</code> 类，如果没有提供任何构造函数，则编译器将提供如下默认构造函数：</p>
+<pre><code class="language-c++">Time::Time() {}
+</code></pre>
+<h3 id="2-复制构造函数">(2). 复制构造函数</h3>
+<p>复制构造函数用于将一个对象复制到新创建的对象中去。类的复制构造函数原型通常如下：</p>
+<pre><code class="language-c++">Class_name(const Class_name &amp;)
+</code></pre>
+<p>它接受一个指向类对象的引用作为参数，例如上例中的 <code>Time</code> 类的复制构造函数原型如下：</p>
+<pre><code class="language-c++">Time(const Time &amp;)
+</code></pre>
+<h3 id="3-默认复制构造函数">(3). 默认复制构造函数</h3>
+<p>默认的复制构造函数逐个复制非静态成员的值（成员复制也称为浅复制），复制的是成员的值。</p>
+<p>因此在对于字符串等情况，默认复制构造函数复制的是字符串的地址，并没有创建出一个新的字符串。因此若要避免仅仅复制字符串的地址，需要用户自定义显式默认复制函数进行深度复制。比如：</p>
+<pre><code class="language-c++">class myString
+{
+private:
+    char * str;
+public:
+    myString() {str = nullptr;}
+    myString(const char * s)
+    {
+        str = s;
+	}
+    myString(const myString &amp;mS)
+    {
+        int length = strlen(mS.str);
+        str = new char[length + 1];
+        strcpy(str, mS.str);
+	}
+};
+</code></pre>
+<p>使用复制构造函数的例子如下：</p>
+<pre><code class="language-c++">myString s1(&quot;Hello&quot;);
+
+myString s2(s1);	//复制
+myString s3 = s1;	//复制
+myString s4 = myString(s1);	//复制
+myString *s5 = new myString(s1);	//复制
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://townshaw.github.io/tag/cpp/" class="tag">
+                    C++
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://townshaw.github.io/post/cpp-xue-xi-bi-ji-01/">
+                  <h3 class="post-title">
+                    C++ 学习笔记 01
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
