@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://townshaw.github.io</id>
     <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-02-11T05:27:24.943Z</updated>
+    <updated>2021-02-12T12:51:41.089Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://townshaw.github.io"/>
     <link rel="self" href="https://townshaw.github.io/atom.xml"/>
@@ -10,6 +10,266 @@
     <logo>https://townshaw.github.io/images/avatar.png</logo>
     <icon>https://townshaw.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Welcome to TX&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[C++ 学习笔记 03]]></title>
+        <id>https://townshaw.github.io/post/c-xue-xi-bi-ji-03/</id>
+        <link href="https://townshaw.github.io/post/c-xue-xi-bi-ji-03/">
+        </link>
+        <updated>2021-02-12T12:51:23.000Z</updated>
+        <content type="html"><![CDATA[<p>本文主要讲 <code>C++</code> 中类的继承。</p>
+<h1 id="一-c-类继承">一. <code>C++</code> 类继承</h1>
+<h2 id="1-构造函数">1. 构造函数</h2>
+<p>派生类不能直接访问基类的私有成员，而必须通过基类的方法进行访问。因此派生类在构造基类的私有成员时，必须使用基类的构造函数来实现。即派生类构造函数必须使用基类构造函数。</p>
+<p>创建派生类对象时，程序首先创建基类对象。这意味着基类对象应当在程序进入派生类构造函数之前被创建。如果没有显式地调用基类构造函数，则编译器会自动使用默认的基类构造函数。比如：<span id="Scientist"></span></p>
+<pre><code class="language-c++">class Scientist
+{
+private:
+    std::string name;
+    int age;
+public:
+    Scientist()
+    {
+        name.clear();
+        age = 0;
+	}
+    Scientist(const char *_name, int _age)
+    {
+        this-&gt;name = _name;
+        this-&gt;age = _age;
+	}
+    void show()
+    {
+        std::cout &lt;&lt; &quot;Name: &quot; &lt;&lt; this-&gt;name &lt;&lt; &quot;\t Age: &quot; &lt;&lt; this-&gt;age;
+	}
+}
+
+class Physicist : public Scientist	//公有继承
+{
+private:
+    std::string research_topic;
+public:
+    Physicist()	//会默认调用 Scientist 的默认构造函数, 如默认构造函数不存在则会报错
+    {
+        research_topic.clear();
+    }
+    Physicist(const char * _name, int _age, const char * re_topic)
+    {
+        //如果以下调用语句不存在, 则会默认调用基类的默认构造函数
+        Scientist(_name, _age);				//调用基类构造函数
+        this-&gt;research_topic = _re_topic;
+	}
+    void show()
+    {
+        std::cout &lt;&lt; &quot;Name: &quot; &lt;&lt; this-&gt;name &lt;&lt; &quot;\t Age: &quot; &lt;&lt; this-&gt;age &lt;&lt; &quot;\t Research Topic: &quot; &lt;&lt; research_topic;
+	}
+}
+</code></pre>
+<h2 id="2-基类和派生类之间的特殊关系">2. 基类和派生类之间的特殊关系</h2>
+<ol>
+<li>
+<p>派生类可以直接访问基类中的非私有方法、数据成员（即可访问公有 <code>public</code> ，保护 <code>protected</code> 数据、方法）。</p>
+</li>
+<li>
+<p>基类指针可以在不进行显式类型转换的情况下指向派生类对象；基类引用可以在不进行显式类型转化的情况下引用派生类对象。</p>
+<p>但是基类的指针或引用只能调用基类的方法，不能调用派生类的方法。比如<a href="#Scientist">上例</a>中：</p>
+<pre><code class="language-c++">Scientist *phy_1 = new Physicist(&quot;A&quot;, 24, &quot;B&quot;);
+
+phy_1-&gt;show();	//这里调用的实际上是基类的 show() 方法
+</code></pre>
+</li>
+<li>
+<p>派生类指针 or 引用不能在不进行显式类型转化的情况下指向基类对象。</p>
+</li>
+</ol>
+<h1 id="二-继承模型">二. 继承模型</h1>
+<p>继承的模型分为两种：</p>
+<ul>
+<li><code>is-a</code> 模型：比如<a href="#Scientist">上例</a>中，物理学家<strong>是一种</strong>科学家，这就是一种 <code>is-a</code> 模型。公有继承非常适合对这种关系进行建模。</li>
+<li><code>has-a</code> 模型：比如午餐有水果、肉类等等。这里就不能使用 <code>is-a</code> 模型建模，否则会得出 <em>水果是一种午餐</em> 这种奇怪的模型。但是如果用 <code>has-a</code> 模型进行建模，可以得到 <em>水果是午餐的一部分</em> 的结论。这相比前面的结论显然更加合适。<code>has-a</code> 模型的建模可以通过在<strong>类中包含其他的对象成员</strong>实现，也可以通过<strong>私有继承</strong>来实现。</li>
+</ul>
+<p>现在先来讨论 <code>is-a</code> 模型的<strong>公有继承</strong>：</p>
+<h2 id="1-多态公有继承">1. 多态公有继承</h2>
+<p>类的继承的一个重要功能就是<strong>多态</strong>，即让某一些方法在基类和派生类中的行为是不同的。在 <code>C++</code> 中有两种机制可以实现多态：</p>
+<ul>
+<li>在派生类中重新定义基类的方法</li>
+<li>使用虚方法</li>
+</ul>
+<p>比如在<a href="#Scientist">上例</a>中，就是用了第一种方法，即在 <code>Physicist</code> 类中重新定义了基类 <code>Scientist</code> 的方法 <code>show()</code> 。这在对派生类对象引用 <code>show()</code> 方法时，调用的是 <code>Physicist::show()</code> ，而 <code>Scientist::show()</code> 则被隐藏起来了。</p>
+<pre><code class="language-c++">Physicist *phy_2 = new Physicist(&quot;A&quot;, 24, &quot;B&quot;);
+
+phy_2-&gt;show();	//调用的是 Physicist::show()
+</code></pre>
+<p>可能你已经注意到了，这个例子和<a href="#Scientist">上面的例子</a>：</p>
+<pre><code class="language-c++">Scientist *phy_1 = new Physicist(&quot;A&quot;, 24, &quot;B&quot;);
+
+phy_1-&gt;show();	//这里调用的实际上是 Scientist::show() 方法
+</code></pre>
+<p>几乎完全一样，对象都是 <code>Physicist</code> 对象，只是指向的指针不同，为什么会导致调用的方法不同呢？</p>
+<p>这其实是因为 <code>C++</code> 编译器在判断指针 or 引用调用的方法时，是根据指针 or 引用的类型来判断的，而不是指针 or 引用指向的对象类型来判定。所以尽管 <code>Scientist</code> 指针指向的是 <code>Physicist</code> 对象，但是在通过 <code>Scientist</code> 指针调用方法时，调用的仍然是 <code>Scientist</code> 的方法。</p>
+<p>那有没有什么办法能让 <code>Scientist</code> 指针调用 <code>show()</code> 函数时，调用 <code>Physicist::show()</code> 呢？也就是说，通过指针指向的对象类型来判定要调用的方法，而不是通过指针的类型来判定？要做到这一点，就可以使用第二种方法，使用<strong>虚函数</strong>。</p>
+<h3 id="1-虚函数">(1). 虚函数</h3>
+<p>把虚函数放在一个三级标题下似乎有点不太合适，因为虚函数十分重要、而又有些复杂。放在这貌似有点和它的地位不符。不过不管了继续说。</p>
+<h4 id="a-虚函数的工作原理">(a). 虚函数的工作原理</h4>
+<p>通常，编译器处理虚函数的方法都是：给每个对象添加一个隐藏成员。隐藏成员中保存了一个指向函数地址数组的指针。这种数组称为<strong>虚函数表（vtbl）</strong>。虚函数表中存储了为类对象进行声明的虚函数的指针。例如，基类对象包含一个指针，该指针指向基类中所有虚函数的地址表。派生类对象将包含一个指向独立地址表的指针。如果派生类提供了虚函数的新定义，该虚函数表将保存新函数的地址；如果派生类没有重新定义虚函数，该 <code>vtbl</code> 将保存函数原始版本的地址。如果派生类定义了新的虚函数，则该函数的地址也将被加入到 <code>vtbl</code> 中。</p>
+<p>下图是一个很好的范例。</p>
+<figure data-type="image" tabindex="1"><img src="E:%5CCodes%5CGit_Repos%5CTownShaw.github.io%5CBlog.md%5C%E8%99%9A%E5%87%BD%E6%95%B0.png" alt="image-20210211170420355" loading="lazy"></figure>
+<h4 id="b-虚函数的使用">(b). 虚函数的使用</h4>
+<p>如<a href="#Scientist">上例</a>所说，如果不将 <code>Scientist::show()</code> 声明为虚函数，则在使用指针对对象方法进行引用时，编译器会根据指针的类型去调用相应的方法。这种做法又称为静态联编。</p>
+<p>但如果将 <code>Scientist::show()</code> 声明为虚函数，则编译器会根据指针指向的对象类型去调用相应的方法。这种做法称为动态联编。</p>
+<p>虽然动态联编看起来很好很方便，但是静态联编的效率比动态联编要高。因此对于不需要在派生类中重新定义的函数，不需要将其声明为虚函数，而仅需要将可能在派生类中重新定义的函数声明为虚函数即可。使用范例如下：</p>
+<pre><code class="language-c++">class Scientist
+{
+private:
+    std::string name;
+    int age;
+public:
+    Scientist()
+    {
+        name.clear();
+        age = 0;
+	}
+    Scientist(const char *_name, int _age)
+    {
+        this-&gt;name = _name;
+        this-&gt;age = _age;
+	}
+    virtual void show()		//定义虚函数
+    {
+        std::cout &lt;&lt; &quot;Name: &quot; &lt;&lt; this-&gt;name &lt;&lt; &quot;\t Age: &quot; &lt;&lt; this-&gt;age;
+	}
+}
+
+class Physicist : public Scientist	//公有继承
+{
+private:
+    std::string research_topic;
+public:
+    Physicist()	//会默认调用 Scientist 的默认构造函数, 如默认构造函数不存在则会报错
+    {
+        research_topic.clear();
+    }
+    Physicist(const char * _name, int _age, const char * re_topic)
+    {
+        //如果以下调用语句不存在, 则会默认调用基类的默认构造函数
+        Scientist(_name, _age);				//调用基类构造函数
+        this-&gt;research_topic = _re_topic;
+	}
+    void show()
+    {
+        std::cout &lt;&lt; &quot;Name: &quot; &lt;&lt; this-&gt;name &lt;&lt; &quot;\t Age: &quot; &lt;&lt; this-&gt;age &lt;&lt; &quot;\t Research Topic: &quot; &lt;&lt; research_topic;
+	}
+}
+</code></pre>
+<p>区别仅仅在于在基类中将 <code>show()</code> 定义为虚函数。但是实际上两个类中都多了两个成员：虚函数表指针和虚函数表。在调用方法时，也不同于原来的静态联编，而是通过虚函数表实现动态联编。</p>
+<p>除了将普通成员函数声明为虚函数之外，一般都需要将基类的析构函数也声明为虚函数。因为不同的派生类可能会在堆中开辟不同的内存区域，因此需要对每个派生类进行单独处理。同时先析构派生类，再析构基类。</p>
+<h2 id="2-包含对象成员的类span-idobj-in-classspan">2. 包含对象成员的类<span id="obj in class"></span></h2>
+<p>这种方式是对 <code>has-a</code> 模型进行建模，这个想必都很熟悉且都用过。比如我要实现一个 <code>Student</code> 类，每个学生都有名字，同时也会有一连串的分数（比如高中生），显然这就是一个 <code>has-a</code> 的模型。那么我就可以使用包含对象成员的类来实现这个模型：</p>
+<pre><code class="language-c++">class Student
+{
+private:
+    std::string name;
+    std::vector scores;		//name, scores 就是其他类的对象
+	...
+public:
+    ...
+};
+</code></pre>
+<h2 id="3-私有继承">3. 私有继承</h2>
+<p>私有继承也是对 <code>has-a</code> 进行建模，这实际上于包含对象成员的类的方式十分地相似，但是也有一些不同的地方。</p>
+<p>实现私有继承与实现多态公有继承的不同之处在于继承时的写法：</p>
+<pre><code class="language-c++">class Physicist : public Scientist		//公有继承
+{};
+
+class Physicist : private Scientist		//私有继承
+{};
+
+class Physicist : Scientist				//私有继承
+{};
+</code></pre>
+<p>进行私有继承之后，基类的公有成员和保护成员都会称为派生类的私有成员，这意味着基类方法将不会成为派生对象公有接口的一部分，但可以在派生类的成员函数中使用它们。</p>
+<p>比如我们使用私有继承再次实现 <code>Strudent</code> 类：</p>
+<pre><code class="language-c++">class Student : private std::string, private std::vector	//相当于 string &amp; vector 成为 Student 的私有成员
+{};
+</code></pre>
+<h3 id="1-构造函数-2">(1). 构造函数</h3>
+<p>私有继承的构造函数与公有继承也有不同。比如对于[上例](#obj in class)而言，因为定义了 <code>name</code> 和 <code>scores</code> 对象，因此在构造函数中只需要对这两个对象进行初始化即可：</p>
+<pre><code class="language-c++">class Student
+{
+private:
+    std::string name;
+    std::vector scores;
+public:
+	Student(const char * _name, const std::vector &amp; _scores)
+    {
+        this-&gt;name = _name;
+        this-&gt;scores = _scores;		//随便写一下, 不知道是不是合法赋值, 不重要
+	}
+};
+</code></pre>
+<p>但在私有继承中，初始化则应该为：</p>
+<pre><code class="language-c++">class Student : private std::string, private std::vector
+{
+public:
+    Student(const char * _name, const std::vector &amp; _scores)
+    {
+        std::string(_name);
+        std::vector(_scores);
+	}
+};
+</code></pre>
+<p>可见在构造函数中的引用从标识符（对象名）变成了直接对类名进行引用。</p>
+<h3 id="2-访问基类的方法">(2). 访问基类的方法</h3>
+<p>同构造函数类似，私有继承访问基类的方法也是通过类名 + 作用域解析运算符来实现。比如 <code>Student</code> 类中，取得名字的长度：</p>
+<pre><code class="language-c++">class Student : private std::string, private std::vector
+{
+public:
+    int name_size()
+    {
+        return std::string::size();
+	}
+};
+</code></pre>
+<h3 id="3-访问基类对象">(3). 访问基类对象</h3>
+<p>比如我现在想要返回 <code>Student</code> 类的名字，那么可以对 <code>*this</code> 使用显式类型转化，取得 <code>std::string</code> 对象：</p>
+<pre><code class="language-c++">class Student : private std::string, private std::vector
+{
+public:
+    const std::string &amp; getName()
+    {
+        return (const std::string &amp;)(*this);
+	}
+};
+</code></pre>
+<p>同理，要取得分数就仅将 <code>std::string</code> 改为 <code>std::vector</code> 即可。</p>
+<p>关于私有继承和包含对象成员的类的选择：通常应使用包含来对 <code>has-a</code> 进行建模；但是如果新类需要访问原有类的保护成员（<code>protected</code>）或者需要重新定义虚函数，则使用私有继承。</p>
+<h2 id="4-多重继承">4. 多重继承</h2>
+<p>明天再写~</p>
+<h1 id="三-抽象基类-abstract-base-class-abc">三. 抽象基类 (Abstract Base Class, ABC)</h1>
+<p>《C++ Primer Plus》上介绍了一个很形象的例子：假设我们正在为椭圆和圆分别编写类。因为圆是一种特殊的椭圆，因此我们可以使圆类继承自椭圆类。这样看似很合适，但是实际上仔细思考就会发现很多问题：</p>
+<ul>
+<li>椭圆需要长轴、短轴来描述大小，需要方向角来描述方向，但是圆只需要一个半径即可，且圆没有方向的概念，因此让圆类直接继承自椭圆类会造成数据冗余。</li>
+<li>椭圆的缩放、移动等操作作用于长轴、短轴、方向角等数据成员，这些方法作用于圆上是会看起来很笨，因为操作圆并不需要改变这么多数据成员。</li>
+</ul>
+<p>总的来说，相比继承椭圆类，直接重新定义一个 <code>Circle</code> 类反而更加方便。但这样又忽略了椭圆和圆之间存在很多共同点的事实，导致又会做一些重复性的工作。</p>
+<p>因此为了解决上述类似的问题，<code>C++</code> 提供了一种解决办法：将椭圆和圆的一些共性抽象出来，将这些共性放入一个抽象基类（ABC）中，然后再由抽象基类派生出椭圆和圆类，在这两个类中再去分别实现他们特殊的地方。</p>
+<p>比如椭圆和圆都有中心点的坐标、移动操作、求面积操作，因此可以将这三个数据 or 方法放入抽象基类中。比如 <code>Area()</code> 求面积函数，对于椭圆需要知道长轴、短轴，对于圆只需要知道半径，因此对于不同的派生类，<code>Area()</code> 方法是不同的，所以在抽象基类中也不能实现该方法。所以索性在抽象基类中直接不做任何实现，而仅仅进行简单的声明。</p>
+<p>抽象基类的实现如下，将待实现的函数声明为<strong>纯虚函数</strong>，声明方法为在函数的最后加上 <code>= 0</code>：</p>
+<pre><code class="language-c++">class BaseEllipse
+{
+private:
+    double x;
+    double y;	//中心点坐标
+    ...
+public:
+    BaseEllipse(double x0, double y0) : x(x0), y(y0) {}		//构造函数
+    virtual ~BaseEllipse() {}		//虚析构函数
+    void Move(double nx, double ny) {x = nx; y = ny};	//不需重写, 因为椭圆和圆的移动都是相同的
+    virtual void Area() const = 0;	//需要重写, 定义为虚函数
+};
+</code></pre>
+<p>注意：当类声明中包含纯虚函数时，不能创建该类的对象。而在派生类中，则必须对<strong>未实现的</strong>纯虚函数重新定义。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 学习笔记 02]]></title>
         <id>https://townshaw.github.io/post/c-xue-xi-bi-ji-02/</id>
