@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1613134298468">
+<link rel="shortcut icon" href="https://townshaw.github.io/favicon.ico?v=1613134348772">
 <link rel="stylesheet" href="https://townshaw.github.io/styles/main.css">
 
 
@@ -38,7 +38,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://townshaw.github.io">
-        <img src="https://townshaw.github.io/images/avatar.png?v=1613134298468" class="site-logo">
+        <img src="https://townshaw.github.io/images/avatar.png?v=1613134348772" class="site-logo">
         <h1 class="site-title">Welcome to TX&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -208,7 +208,7 @@ phy_1-&gt;show();	//这里调用的实际上是 Scientist::show() 方法
 <h4 id="a-虚函数的工作原理">(a). 虚函数的工作原理</h4>
 <p>通常，编译器处理虚函数的方法都是：给每个对象添加一个隐藏成员。隐藏成员中保存了一个指向函数地址数组的指针。这种数组称为<strong>虚函数表（vtbl）</strong>。虚函数表中存储了为类对象进行声明的虚函数的指针。例如，基类对象包含一个指针，该指针指向基类中所有虚函数的地址表。派生类对象将包含一个指向独立地址表的指针。如果派生类提供了虚函数的新定义，该虚函数表将保存新函数的地址；如果派生类没有重新定义虚函数，该 <code>vtbl</code> 将保存函数原始版本的地址。如果派生类定义了新的虚函数，则该函数的地址也将被加入到 <code>vtbl</code> 中。</p>
 <p>下图是一个很好的范例。</p>
-<figure data-type="image" tabindex="1"><img src="E:%5CCodes%5CGit_Repos%5CTownShaw.github.io%5CBlog.md%5C%E8%99%9A%E5%87%BD%E6%95%B0.png" alt="image-20210211170420355" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://townshaw.github.io/post-images/1613134345985.png" alt="" loading="lazy"></figure>
 <h4 id="b-虚函数的使用">(b). 虚函数的使用</h4>
 <p>如<a href="#Scientist">上例</a>所说，如果不将 <code>Scientist::show()</code> 声明为虚函数，则在使用指针对对象方法进行引用时，编译器会根据指针的类型去调用相应的方法。这种做法又称为静态联编。</p>
 <p>但如果将 <code>Scientist::show()</code> 声明为虚函数，则编译器会根据指针指向的对象类型去调用相应的方法。这种做法称为动态联编。</p>
