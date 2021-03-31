@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://townshaw.github.io</id>
     <title>Welcome to TX&apos;s Blog</title>
-    <updated>2021-02-12T12:52:31.658Z</updated>
+    <updated>2021-03-31T13:08:19.260Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://townshaw.github.io"/>
     <link rel="self" href="https://townshaw.github.io/atom.xml"/>
@@ -10,6 +10,239 @@
     <logo>https://townshaw.github.io/images/avatar.png</logo>
     <icon>https://townshaw.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, Welcome to TX&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[基于 Linux 的 socket 编程笔记]]></title>
+        <id>https://townshaw.github.io/post/ji-yu-linux-de-socket-bian-cheng-bi-ji/</id>
+        <link href="https://townshaw.github.io/post/ji-yu-linux-de-socket-bian-cheng-bi-ji/">
+        </link>
+        <updated>2021-03-31T12:16:15.000Z</updated>
+        <content type="html"><![CDATA[<p>本文学习自 《TCP/IP网络编程》。主要记录 <code>socket</code> 编程中常见的函数以及一些 <code>Linux</code> 操作相关知识</p>
+<p>直接上代码：</p>
+<pre><code class="language-c">/* hello_server.c , 在服务器端运行的 socket 程序 */
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+
+void error_handling(char *message);
+
+int main(int argc, char *argv[])
+{
+    int serv_sock;
+    int clnt_sock;
+
+    struct sockaddr_in serv_addr;
+    struct sockaddr_in clnt_addr;
+    socklen_t clnt_addr_size;
+
+    char message[] = &quot;Hello, World!&quot;;
+
+    if (argc != 2)
+    {
+        printf(&quot;Usage: %s &lt;port&gt;\n&quot;, argv[0]);
+        exit(1);
+    }
+
+    serv_sock = socket(PF_INET, SOCK_STREAM, 0);    /* Create Socket, PF_INET = 3 --- IP protocol family */
+    if (serv_sock == -1)
+    {
+        error_handling(&quot;socket(), error!&quot;);
+    }
+
+    bzero(&amp;serv_addr, sizeof(struct sockaddr_in));
+
+    serv_addr.sin_family = AF_INET;     /* AF_INET = PF_INET --- IP protocol family */
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(atoi(argv[1]));
+
+    if (bind(serv_sock, (struct sockaddr *)(&amp;serv_addr), sizeof(serv_addr)) == -1)      /* build connection */
+    {
+        error_handling(&quot;bind() error!&quot;);
+    }
+
+    if (listen(serv_sock, 5) == -1)
+    {
+        error_handling(&quot;listen() error!&quot;);
+    }
+
+    /* handle request from client */
+
+    clnt_addr_size = sizeof(clnt_addr);
+    clnt_sock = accept(serv_sock, (struct sockaddr *)(&amp;clnt_addr), &amp;clnt_addr_size);
+    if (clnt_sock == -1)
+    {
+        error_handling(&quot;accept() error!&quot;);
+    }
+
+    write(clnt_sock, message, sizeof(message));
+    close(clnt_sock);
+    close(serv_sock);
+
+
+    return 0;
+}
+
+void error_handling(char *message)
+{
+    fputs(message, stderr);
+    fputc('\n', stderr);
+    exit(1);
+}
+</code></pre>
+<pre><code class="language-c">/* hello_client.c , 在客户端运行的 socket 程序 */
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+
+void error_handling(char *message);
+
+int main(int argc, char *argv[])
+{
+    int sock;
+    struct sockaddr_in serv_addr;
+    
+    char message[30];
+    int str_len;
+
+    if (argc != 3)
+    {
+        printf(&quot;Usage: %s &lt;IP&gt; &lt;port&gt;\n&quot;, argv[0]);
+        exit(1);
+    }
+    
+    sock = socket(PF_INET, SOCK_STREAM, 0);
+    if (sock == -1)
+    {
+        error_handling(&quot;socket() error!&quot;);
+    }
+
+    bzero(&amp;serv_addr, sizeof(struct sockaddr_in));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
+    serv_addr.sin_port = htons(atoi(argv[2]));
+
+    if (connect(sock, (struct sockaddr *)(&amp;serv_addr), sizeof(serv_addr)) == -1)
+    {
+        error_handling(&quot;connect() error!&quot;);
+    }
+
+    str_len = read(sock, message, sizeof(message) - 1);
+    if (str_len == -1)
+    {
+        error_handling(&quot;read() error!&quot;);
+    }
+
+    printf(&quot;Message from server %s : %s\n&quot;, argv[1], message);
+    close(sock);
+
+    return 0;
+}
+
+void error_handling(char *message)
+{
+    fputs(message, stderr);
+    fputc('\n', stderr);
+    exit(1);
+}
+</code></pre>
+<p>下面解释程序中出现的各种结构体、函数以及没见过的常量.</p>
+<ol>
+<li><code>struct sockaddr_in</code>:<pre><code class="language-c">struct sockaddr_in
+{
+    sa_family_t      sin_family;      //地址族 (Address Family)
+    uint16_t         sin_port;        //16 位 TCP/UDP 端口号
+    struct in_addr   sin_addr;        //32 位 IP 地址
+    char             sin_zero[8];     //不使用
+}
+
+struct in_addr
+{
+    in_addr_t        s_addr;     //32 位 IPv4 地址
+}
+</code></pre>
+</li>
+</ol>
+<ul>
+<li><code>sin_family</code> ：定义了使用的协议族，不同的协议族适用的地址族不同。比如 IPv4 使用 4 字节地址族，IPv6 使用 16 字节地址族。部分可供取值如下表所示：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">地址族(Address Family)</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AF_INET</td>
+<td style="text-align:center">IPv4 网络协议中使用的地址族</td>
+</tr>
+<tr>
+<td style="text-align:center">AF_INET6</td>
+<td style="text-align:center">IPv6 网络协议中使用的地址族</td>
+</tr>
+<tr>
+<td style="text-align:center">AF_LOCAL</td>
+<td style="text-align:center">本地通信中采用的 UNIX 协议的地址族</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>sin_port</code> ：保存 16 位端口号，重点在于，它以网络字节序保存。</li>
+<li><code>sin_addr</code> ：保存 32 位 IP 地址信息，且也是以网络字节序保存。</li>
+<li><code>sin_zero</code> ：不使用，仅用于将该结构体大小填充至与结构体 <code>struct sockaddr</code> 相同。便于这两个结构体之间进行转化。</li>
+</ul>
+<ol start="2">
+<li><code>socket()</code>：用于创建一个新的套接字<pre><code class="language-c">int socket(int domain, int type, int protocol);
+/* 成功时返回文件描述符，失败时返回 -1 */
+</code></pre>
+<ul>
+<li><code>domain</code>：即是上文中提到的地址族。</li>
+<li><code>type</code>：指示套接字类型，有面向连接的套接字 <code>SOCK_STREAM</code>、面向消息的套接字 <code>SOCK_DGRAM</code>. 其中 <code>SOCK_STREAM</code> 类似于 <code>TCP</code>，提供可靠、按序传递、基于字节的面向连接数字传输方式；<code>SOCK_DGREAM</code> 类似于 <code>UDP</code>，提供不可靠、不按序传递、以数据的高速传输为目的的服务。</li>
+<li><code>protocol</code>：可以为0，表示不显式指定使用的协议。该项(已知)可取的值有：<code>IPPROTP_TCP</code> 使用 <code>TCP</code> 协议，<code>IPPROTP_UDP</code> 使用 <code>UDP</code> 协议。</li>
+</ul>
+</li>
+<li><code>bind()</code>：用于为套接字分配地址信息。<pre><code class="language-c">int bind(int sockfd, struct sockaddr *myaddr, socklen_t addrlen)
+/* 成功时返回 0，失败是返回 -1 */
+</code></pre>
+<ul>
+<li><code>sockfd</code>：存放待分配地址的套接字的文件描述符。</li>
+<li><code>myaddr</code>：存放为套接字分配的地址信息 --- IP 地址和端口号等。</li>
+<li><code>addrlen</code>：暂不清楚。</li>
+</ul>
+</li>
+<li><code>listen</code>, <code>accept</code> 以后再说，现在不是很清楚。</li>
+<li><code>connect</code>:<pre><code class="language-c">int connect(int sockfd, struct sockaddr *serv_addr, socklen_t addrlen)
+/* 连接成功时返回 0，否则返回 -1 */
+</code></pre>
+<ul>
+<li><code>sockfd</code>：</li>
+<li><code>serv_addr</code>：</li>
+<li><code>addrlen</code>：</li>
+</ul>
+</li>
+<li><code>htonl()</code>, <code>htons()</code>, <code>inet_addr()</code>：这涉及到 IP 地址在网络字节序、字节序、点分十进制字符串之间的转换.<br>
+网络字节序、字节序：<br>
+这和存储数据的 大端序(高字节放在低地址)和小端序(高字节放在高地址) 有关。因为 Intel, AMD CPU都是使用小端序，而网络传输数据时采用大端序 --- 即网络字节序。所以需要将数据转化为大端序格式之后再进行网络传输。这也是为什么需要 <code>htonl()</code> 和 <code>htons()</code> 函数。<br>
+<code>htons(), htonl()</code> 函数中 <code>h</code> 代表主机(host)字节序，<code>n</code>代表网络(network)字节序。因此这两个函数就是用于将主机字节序转化为网络字节序的。最后的 <code>s</code> 和 <code>l</code> 分别代表对 <code>unsigned short</code> 和 <code>unsigned long</code> 类型进行转化。返回的类型与输入类型相同。<br>
+对称地，有函数：<code>ntohs(), ntohl()</code>，作用与上面类似。<pre><code class="language-c">in_addr_t inet_addr(const char *string)
+/* 成功时返回 32 位大端序整形数组，失败时返回 INADDR_NONE */
+</code></pre>
+该函数用于将人们常用的点分十进制表示的 IP 地址转化为 32 位大端序二进制表示的 IP 地址，用于计算机的输入。<pre><code class="language-c">char * inet_ntoa(struct in_addr adr)
+/* 成功时返回转换的字符串地址值，失败是返回 -1 */
+</code></pre>
+将大端序的 IP 地址(存放在结构体 in_addr 中)转化为点分十进制字符串表示的 IP 地址，并返回指向该 IP 地址字符串的指针。</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 学习笔记 03]]></title>
         <id>https://townshaw.github.io/post/c-xue-xi-bi-ji-03/</id>
